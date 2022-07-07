@@ -3,17 +3,18 @@ const { registerSchema } = require("../middlewares/validation");
 
 exports.createUser = async (req, res, next) => {
     try {
-        const { username, email, name, lastName, password, role } = req.body;
         let result = await registerSchema.validateAsync(req.body);
         console.log(result)
 
-        let user = new UserModel({ username, email, name, lastName, password, role });
+        let user = new UserModel(req.body);
+        user.hashPassword();
         let savedUser = await user.save();
+
         savedUser.password = null;
-        res.send(savedUser);
-    }catch (err) {
+        return res.status(201).send(savedUser);
+    } catch (err) {
     if (err.isJoi === true) err.status = 400;    
-    next(err);
+        next(err);
     }
 };
 
@@ -28,14 +29,14 @@ exports.getUser = async (req, res, next) => {
         }
         console.log(user);
         res.send({ user });
-    }catch (err) {
-    next(err);
+    } catch (err) {
+        next(err);
     }
 };
 
 exports.getAllUsers = async (req, res, next) => {
     try {
-        const users = await UserModel.find({}, "-password");
+        const users = await UserModel.find({}, "-password").populate('groups');
         res.send({
             count: users.length,
             users,
@@ -93,3 +94,15 @@ exports.deleteUser = async (req, res, next) => {
     next (err);
     }
 };
+
+exports.addGroup = async (req, res, next) => {
+    const { user } = req;
+    const { id } = req.params;
+    
+    user.addGroup(id);
+    await user.save();
+
+    const fullUser = await UserModel.findOne({ _id: user._id }).populate('groups');
+
+    return res.status(200).send(fullUser);
+}

@@ -1,18 +1,17 @@
-var passport = require("passport");
 require("./auth/auth");
 
 require("./database/config");
 
-var authRouter = require("./routers/auth");
-var userRouter = require("./routers/user");
+const baseRouter = require("./routers/base");
 
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var helmet = require("helmet");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const helmet = require("helmet");
+const errorHandler = require("./utils/errorHandler");
 
-var app = express();
+const app = express();
 
 // Middlewares
 app.use(logger("dev"));
@@ -23,8 +22,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // Route middlewares
-app.use(authRouter);
-app.use(passport.authenticate("jwt", { session: false }));
-app.use("/users", userRouter);
+app.use('/api', baseRouter);
+
+// custom error handlers ultimo app.use
+app.use(errorHandler);
 
 module.exports = app;

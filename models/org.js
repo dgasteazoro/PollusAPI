@@ -10,3 +10,4 @@ const OrgSchema = new Schema(
 const OrgModel = mongoose.model("org", OrgSchema);
 
 module.exports = OrgModel;
+

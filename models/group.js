@@ -8,19 +8,20 @@ const GroupSchema = new Schema(
             required: true,
         },        
         groupLeader: {
-            leaderId: String,
-            username: String,
+            required: true,
+            type: Schema.Types.ObjectId,
+            ref: 'user'
         },
-        members: [{
-            userId: String,
-            username: String
-        }],
-        surveys: [{
-            surveyId: String
-        }]
+        // org
+        // surveys: [{
+        //     surveyId: String
+        // }]
     },
     { timestamps: true }
 );
+
+// Create method addSurvey
+// Create method removeSurvey
 
 const GroupModel = mongoose.model("group", GroupSchema);
 

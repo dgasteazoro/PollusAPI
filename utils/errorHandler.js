@@ -5,6 +5,13 @@ module.exports = (err, req, res, next) => {
             message: "Duplicate key",
         });
     }
+
+    // HttpError
+    if (err.statusCode != null) {
+        console.log('simon');
+        return res.status(err.statusCode()).json({ message: err.message });
+    }
+
     // Mongoose model
     if (err.errors) {
         var detailErrors = [];
@@ -17,5 +24,6 @@ module.exports = (err, req, res, next) => {
             errors: detailErrors,
         });
     }
+    
     next(err);
 };
