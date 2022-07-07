@@ -8,11 +8,13 @@ const UserSchema = new Schema(
             type: String,
             required: true,
             unique: true,
+            lowercase: true,
         },
         email: {
             type: String,
             required: true,
             unique: true,
+            lowercase: true,
         },
         name: {
             type: String,
@@ -30,10 +32,6 @@ const UserSchema = new Schema(
             type: String,
             enum: ["admin", "org", "user"],
             default: "user"
-        },
-        org: {
-            type: String,
-            required: true,
         },
         groups: {
             type: Array

@@ -3,12 +3,13 @@ const { registerSchema } = require("../middlewares/validation");
 
 exports.createUser = async (req, res, next) => {
     try {
-        const { username, email, name, lastName, password, role, org} = req.body;
-        const result = await registerSchema.validateAsync(req.body);
+        const { username, email, name, lastName, password, role } = req.body;
+        let result = await registerSchema.validateAsync(req.body);
         console.log(result)
 
-        const user = new UserModel({ username, email, name, lastName, password, role, org });
-        const savedUser = await user.save();
+        let user = new UserModel({ username, email, name, lastName, password, role });
+        let savedUser = await user.save();
+        savedUser.password = null;
         res.send(savedUser);
     }catch (err) {
     if (err.isJoi === true) err.status = 400;    
@@ -25,6 +26,7 @@ exports.getUser = async (req, res, next) => {
                 message: "User not found",
             });
         }
+        console.log(user);
         res.send({ user });
     }catch (err) {
     next(err);
@@ -61,7 +63,7 @@ exports.updateUser = async (req, res, next) => {
 
         const updateUser = await user.save();
 
-        if (user == updatedUser) {
+        if (user == updateUser) {
             return res.send({
                 message: "User has been updated",
                 user: { username, name, lastName, email: user.email},

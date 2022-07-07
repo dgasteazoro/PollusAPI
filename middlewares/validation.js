@@ -18,8 +18,6 @@ const registerSchema = Joi.object({
         .required(),
     role: Joi.string()
         .required(),
-    org: Joi.string()
-        .required(),
     group: [Joi.string],
 });
 

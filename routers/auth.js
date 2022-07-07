@@ -2,25 +2,28 @@ const { createUser } = require("../controllers/user");
 var express = require("express");
 var jwt = require("jsonwebtoken");
 var UserModel = require("../models/user");
+var router = express.Router();
 
 router.post("/register", createUser);
 router.post("/login", async (req, res, next) => {
     try{
-        const { username, password, email } = req.body; 
-        const conditions = !!username ? { username: username } : { email: email }; // username is defined by either username or email
-        const user = await UserModel.findOne({ conditions });
+        let { username, password, email } = req.body;
+        let conditions = !!username ? {username: username} : {email: email};
+        let user = await UserModel.findOne(conditions);
+        console.log(user);
         if (!user)
             return res.status(400).send({
                 message: "User not found",
             });
 
-        const validPassword = await user.isValidPassword(password);
+        let validPassword = await user.isValidPassword(password);
+        console.log(validPassword)
         if (!validPassword)
             return res.status(400).send({
                 message: "Invalid password",
             });
-        const body = { _id: user._id, email: user.email };
-        const token = jwt.sign(
+        let body = { _id: user._id, email: user.email };
+        let token = jwt.sign(
             { user: body },
             process.env.JWT_SECRET || "TOP_SECRET"
         );

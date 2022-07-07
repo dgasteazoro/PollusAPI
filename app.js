@@ -23,7 +23,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // Route middlewares
-app.use("/api/");
 app.use(authRouter);
 app.use(passport.authenticate("jwt", { session: false }));
 app.use("/users", userRouter);
