@@ -7,17 +7,18 @@ const {
     addGroup,
 } = require("../controllers/user");
 var express = require("express");
+const { authorizeAdmin, authorizeOrg } = require("../middlewares/authorize");
 var router = express.Router();
 
-router.post("/", createUser);
+router.post("/", authorizeOrg, createUser);
 
-router.get("/:username", getUser);
-router.get("/", getAllUsers);
+router.get("/:username", authorizeAdmin, getUser);
+router.get("/", authorizeAdmin, getAllUsers);
 
 router.put("/:username", updateUser);
 
 router.delete("/:username", deleteUser);
 
-router.patch('/groups/:id', addGroup);
+router.patch('/groups/:id', authorizeOrg, addGroup);
 
 module.exports = router;
