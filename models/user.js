@@ -35,9 +35,9 @@ const UserSchema = new Schema(
             type: String,
             required: true,
         },
-        groups: [{
-            type: String,
-        }]
+        groups: {
+            type: Array
+        }
     },
     { timestamps: true }
 );

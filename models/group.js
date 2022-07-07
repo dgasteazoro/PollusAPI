@@ -6,16 +6,20 @@ const GroupSchema = new Schema(
         name: {
             type: String,
             required: true,
+        },        
+        groupLeader: {
+            leaderId: String,
+            username: String,
         },
         members: [{
-            username: String,
+            userId: String,
+            username: String
         }],
-        groupLeader: {
-            
-        }
-
-
+        surveys: [{
+            surveyId: String
+        }]
     },
+    { timestamps: true }
 );
 
 const GroupModel = mongoose.model("group", GroupSchema);
