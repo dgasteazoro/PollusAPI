@@ -4,13 +4,11 @@ const { registerSchema } = require("../middlewares/validation");
 exports.createUser = async (req, res, next) => {
     try {
         let result = await registerSchema.validateAsync(req.body);
-        console.log(result)
 
         let user = new UserModel(req.body);
-        user.hashPassword();
+
         let savedUser = await user.save();
 
-        savedUser.password = null;
         return res.status(201).send(savedUser);
     } catch (err) {
     if (err.isJoi === true) err.status = 400;    
@@ -46,10 +44,10 @@ exports.getAllUsers = async (req, res, next) => {
     }
 };
 
-exports.updateUser = async (req, res, next) => {
+/* exports.updateUser = async (req, res, next) => {
     try{
         const usernameToUpdate = req.params.username;
-        const { username, name, lastName, groups} = req.body;
+        const { name, lastName, groups} = req.body;
         const user = await UserModel.findOne({ username: usernameToUpdate});
 
         if (!user) 
@@ -57,7 +55,6 @@ exports.updateUser = async (req, res, next) => {
             message: "User not found",
         });
 
-        user.username = username;
         user.name = name;
         user.lastName = lastName;
         user.groups = groups;
@@ -76,7 +73,7 @@ exports.updateUser = async (req, res, next) => {
     }catch (err) {
     next(err);
     }
-};
+}; */
 
 exports.deleteUser = async (req, res, next) => {
     try {
@@ -90,8 +87,8 @@ exports.deleteUser = async (req, res, next) => {
         return res.status(400).send({
             message: "Cannot delete user",
         });
-    }catch (err) {
-    next (err);
+    } catch (err) {
+        next (err);
     }
 };
 
@@ -106,3 +103,5 @@ exports.addGroup = async (req, res, next) => {
 
     return res.status(200).send(fullUser);
 }
+
+exports

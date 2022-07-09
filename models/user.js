@@ -54,13 +54,14 @@ const UserSchema = new Schema(
 
 // Crear un usuario -> contra normal -> contra hasheada
 // Actualizar un usuario -> contra hasheada -> aplicar hash
-UserSchema.methods.hashPassword = async function () {
+// Always encrypt the password before save
+UserSchema.pre("save", async function (next) {
     const user = this;
-    // Auto-generate Salt and 10 salt rounds
+    // Auto-generate Salt, and 10 salt rounds
     const hash = await bcrypt.hash(user.password, 10);
     user.password = hash;
     next();
-};
+  });
 
 // Helper method to validate password
 UserSchema.methods.isValidPassword = async function (password) {

@@ -12,16 +12,41 @@ const GroupSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'user'
         },
-        // org
-        // surveys: [{
-        //     surveyId: String
-        // }]
+        org: {
+            type: Schema.Types.ObjectId, ref: 'org'
+        },
+        surveys: [{
+            type: Schema.Types.ObjectId, ref: 'survey'
+        }],
     },
     { timestamps: true }
 );
 
-// Create method addSurvey
-// Create method removeSurvey
+GroupSchema.methods.addSurvey = async function (surveyId) {
+    const group = this;
+
+    const belongsToGroup = group.surveys.some((it) => it === surveyId);
+
+    if (belongsToGroup)
+        return null;
+
+    group.surveys.push(surveyId);
+    
+    return group.surveys;
+}
+
+GroupSchema.methods.removeSurvey = async function (surveyId) {
+    const group = this;
+
+    const belongsToGroup = group.surveys.some((it) => it === surveyId);
+
+    if (!belongsToGroup)
+        return false;
+
+    group.surveys = group.surveys.filter((it) => it !== surveyId);
+    
+    return true;
+}
 
 const GroupModel = mongoose.model("group", GroupSchema);
 

@@ -19,6 +19,8 @@ const registerSchema = Joi.object({
     role: Joi.string()
         .required(),
     group: [Joi.string],
+    org: Joi.string().
+    required()
 });
 
 module.exports = { registerSchema };

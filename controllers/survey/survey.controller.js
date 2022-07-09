@@ -66,3 +66,36 @@ exports.deleteSurvey = async (req, res, next) => {
 const getQuestion = (questions, id) => questions.find((q) => q._id == id);
 
 const getAnswer = (answers, id) => answers.find((a) => a._id == id);
+
+exports.getSurvey = async (req, res, next) => {
+    try {
+        const survey = await SurveyModel.findById(req.params.id);
+        res.status(200).json(survey);
+    } catch (err) {
+        next (err);
+    }
+};
+
+exports.getAllSurveys = async (req, res, next) => {
+    try {
+        const surveys = await SurveyModel.find({});
+        res.send({
+            count: surveys.length,
+            surveys,
+        });
+    } catch (err) {
+        next (err);
+    };
+};
+
+exports.getAllAnsweredSurveys = async (req, res, next) => {
+    try {
+        const answSurveys = await AnsweredSurveyModel.find({});
+        res.send({
+            count: answSurveys.length,
+            answSurveys,
+        });
+    } catch (err) {
+        next (err);
+    };
+}; 

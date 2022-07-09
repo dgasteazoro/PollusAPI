@@ -15,7 +15,7 @@ router.post("/", authorizeOrg, createUser);
 router.get("/:username", authorizeAdmin, getUser);
 router.get("/", authorizeAdmin, getAllUsers);
 
-router.put("/:username", updateUser);
+// router.put("/:username", updateUser);
 
 router.delete("/:username", deleteUser);
 

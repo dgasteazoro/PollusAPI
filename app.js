@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Route middlewares
 app.use('/api', baseRouter);
 
-// custom error handlers ultimo app.use
+// custom error handlers last app.use
 app.use(errorHandler);
 
 module.exports = app;

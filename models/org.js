@@ -9,6 +9,9 @@ const OrgSchema = new Schema({
         },
         purpose: {
             type: String,
+            enum: ["NGO", "Gov", "Business", "Undeclared"],
+            default: "Undeclared",
+            required: true,
         }
     },
     { timestamps: true }
